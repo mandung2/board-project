@@ -48,7 +48,7 @@ body {
 }
 
 .page {
-  max-width: 42rem;
+  max-width: 54rem;
   margin: 0 auto;
   padding: 0 1.5rem;
   min-height: 100vh;
@@ -145,6 +145,64 @@ nav {
 .content {
   padding-bottom: 6rem;
   flex: 1;
+}
+
+.todo-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.todo-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.memo-pad {
+  width: 15rem;
+  flex-shrink: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.memo-heading {
+  font-family: var(--font-number);
+  font-size: 1.05rem;
+  font-weight: normal;
+  margin: 0 0 0.75rem;
+}
+
+.memo-textarea {
+  height: 20rem;
+  resize: vertical;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: var(--font-number);
+  line-height: 1.6;
+}
+.memo-textarea::placeholder {
+  color: var(--muted);
+}
+.memo-textarea:focus {
+  outline: none;
+}
+
+@media (max-width: 700px) {
+  .todo-layout {
+    flex-direction: column-reverse;
+  }
+  .memo-pad {
+    width: 100%;
+  }
+  .memo-textarea {
+    height: 10rem;
+  }
 }
 
 .calendar {

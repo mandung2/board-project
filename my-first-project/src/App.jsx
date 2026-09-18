@@ -85,6 +85,8 @@ function App() {
   const [page, setPage] = useState('todo')
   const [showPast, setShowPast] = useState(false)
   const [todos, setTodos] = useState([])
+  const [memo, setMemo] = useState('')
+  const memoSaveTimer = useRef(null)
   const [viewDate, setViewDate] = useState(() => new Date())
   const [selectedDate, setSelectedDate] = useState(() => formatDateKey(new Date()))
   const [text, setText] = useState('')
@@ -102,8 +104,19 @@ function App() {
     authedPost('todos', {}).then((data) => {
       if (data.ok) setTodos(data.items)
     })
+    authedPost('memo', {}).then((data) => {
+      if (data.ok) setMemo(data.content)
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth])
+
+  function handleMemoChange(value) {
+    setMemo(value)
+    clearTimeout(memoSaveTimer.current)
+    memoSaveTimer.current = setTimeout(() => {
+      authedPost('memo-save', { content: value })
+    }, 600)
+  }
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -197,6 +210,7 @@ function App() {
     sessionStorage.removeItem(AUTH_KEY)
     setAuth(null)
     setTodos([])
+    setMemo('')
   }
 
   async function handleSubmit(e) {
@@ -384,27 +398,40 @@ function App() {
               </button>
             </form>
           </div>
-        ) : page === 'home' ? (
-          <div className="home-list">
-            {pastDates.length > 0 && (
-              <div className="home-past-section">
-                {showPast && pastDates.map((date) => renderDateGroup(date))}
-                <button
-                  type="button"
-                  className="load-past-btn"
-                  onClick={() => setShowPast((v) => !v)}
-                >
-                  {showPast ? '이전 목록 가리기' : '이전 목록 불러오기'}
-                </button>
-              </div>
-            )}
-
-            {renderDateGroup(todayKey, `오늘 · ${formatDateLabel(todayKey)}`)}
-
-            {futureDates.map((date) => renderDateGroup(date))}
-          </div>
         ) : (
-          <>
+          <div className="todo-layout">
+            <aside className="memo-pad">
+              <h2 className="memo-heading">메모장</h2>
+              <textarea
+                className="memo-textarea"
+                placeholder="자유롭게 메모하세요"
+                value={memo}
+                onChange={(e) => handleMemoChange(e.target.value)}
+              />
+            </aside>
+
+            <div className="todo-main">
+            {page === 'home' ? (
+              <div className="home-list">
+                {pastDates.length > 0 && (
+                  <div className="home-past-section">
+                    {showPast && pastDates.map((date) => renderDateGroup(date))}
+                    <button
+                      type="button"
+                      className="load-past-btn"
+                      onClick={() => setShowPast((v) => !v)}
+                    >
+                      {showPast ? '이전 목록 가리기' : '이전 목록 불러오기'}
+                    </button>
+                  </div>
+                )}
+
+                {renderDateGroup(todayKey, `오늘 · ${formatDateLabel(todayKey)}`)}
+
+                {futureDates.map((date) => renderDateGroup(date))}
+              </div>
+            ) : (
+              <>
             <div className="calendar">
               <div className="calendar-header">
                 <button
@@ -521,7 +548,10 @@ function App() {
             {selectedTodos.length === 0 && (
               <p id="empty-msg">아직 할 일이 없어요.</p>
             )}
-          </>
+              </>
+            )}
+            </div>
+          </div>
         )}
       </section>
 
