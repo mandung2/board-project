@@ -6,8 +6,27 @@
 }
 
 @font-face {
-  font-family: 'MitmiFont';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_1@1.0/Ownglyph_meetme-Rg.woff2') format('woff2');
+  font-family: 'CookieRun';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CookieRun';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/CookieRunOTF-Bold00.woff') format('woff');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CookieRun';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/CookieRunOTF-Black00.woff') format('woff');
+  font-weight: 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OmuDaye';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
   font-weight: normal;
   font-display: swap;
 }
@@ -21,7 +40,8 @@
   --accent-soft: #fdedf3;
   --border: #f3d9e4;
   --font-display: 'Cafe24Surround', sans-serif;
-  --font-body: 'MitmiFont', sans-serif;
+  --font-body: 'CookieRun', sans-serif;
+  --font-number: 'OmuDaye', sans-serif;
 }
 
 :root[data-theme='dark'] {
@@ -67,6 +87,10 @@ nav {
   font-family: var(--font-display);
 }
 
+.font-number {
+  font-family: var(--font-number);
+}
+
 .site-header {
   display: flex;
   justify-content: flex-end;
@@ -79,13 +103,16 @@ nav {
   display: flex;
   align-items: center;
   gap: 2rem;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   color: var(--muted);
 }
 
 .nav-link {
   color: inherit;
   text-decoration: none;
+}
+.nav-user {
+  color: var(--muted);
 }
 .nav-link:hover {
   opacity: 0.7;
@@ -118,7 +145,7 @@ nav {
 }
 
 .eyebrow {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   margin-bottom: 1rem;
@@ -126,17 +153,143 @@ nav {
 }
 
 .hero h1 {
-  font-size: 2rem;
+  font-size: 2.2rem;
 }
 @media (min-width: 768px) {
   .hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
   }
 }
 
 .content {
   padding-bottom: 6rem;
   flex: 1;
+}
+
+.calendar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.calendar-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-number);
+  font-size: 1.2rem;
+}
+
+.today-btn {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: none;
+  border-radius: 9999px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+.today-btn:hover {
+  opacity: 0.8;
+}
+
+.calendar-nav-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+.calendar-nav-btn:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.calendar-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.calendar-day {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: none;
+  border: none;
+  border-radius: 0.5rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+.calendar-day:hover {
+  background: var(--accent-soft);
+}
+.calendar-day.outside {
+  color: var(--muted);
+  opacity: 0.5;
+}
+.calendar-day.today .calendar-day-number {
+  color: var(--accent);
+  font-weight: 700;
+}
+.calendar-day.selected {
+  background: var(--accent);
+  color: #ffffff;
+}
+.calendar-day.selected .calendar-day-number {
+  color: #ffffff;
+}
+
+.calendar-day-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+.calendar-day.selected .calendar-day-dot {
+  background: #ffffff;
+}
+
+.selected-date-label {
+  font-family: var(--font-number);
+  font-size: 1.2rem;
+  font-weight: normal;
+  margin: 0 0 1rem;
 }
 
 .todo-form {
@@ -152,7 +305,7 @@ nav {
   flex: 1;
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-family: var(--font-body);
 }
 #todo-input::placeholder {
@@ -170,7 +323,7 @@ nav {
   border: none;
   border-radius: 0.5rem;
   padding: 0.75rem 1.25rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   font-family: var(--font-body);
@@ -181,17 +334,54 @@ nav {
 
 #remaining-count {
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   margin: 0 0 1rem;
 }
 
-#todo-list {
+#todo-list,
+.todo-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.home-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.home-date-heading {
+  font-family: var(--font-number);
+  font-size: 1.2rem;
+  font-weight: normal;
+  margin: 0 0 1rem;
+}
+
+.home-past-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.load-past-btn {
+  align-self: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+.load-past-btn:hover {
+  opacity: 0.85;
 }
 
 .todo-item {
@@ -206,8 +396,7 @@ nav {
 }
 
 .todo-text {
-  cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   flex: 1;
   text-align: left;
 }
@@ -217,25 +406,114 @@ nav {
   opacity: 0.7;
 }
 
+.todo-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.complete-btn,
 .delete-btn {
   color: var(--muted);
   transition: color 0.15s ease;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   flex-shrink: 0;
   font-family: var(--font-body);
 }
+.complete-btn:hover {
+  color: var(--accent);
+}
 .delete-btn:hover {
+  color: var(--accent);
+}
+.todo-item.done .complete-btn {
   color: var(--accent);
 }
 
 #empty-msg {
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   text-align: center;
   padding: 2.5rem 0;
+}
+
+.auth-box {
+  max-width: 22rem;
+  margin: 0 auto;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-tab {
+  flex: 1;
+  background: var(--accent-soft);
+  color: var(--muted);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+.auth-tab.active {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.auth-form input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: var(--font-body);
+}
+.auth-form input::placeholder {
+  color: var(--muted);
+}
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.auth-form button[type='submit'] {
+  background: var(--accent);
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.auth-form button[type='submit']:hover {
+  opacity: 0.85;
+}
+.auth-form button[type='submit']:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-error {
+  color: var(--accent);
+  font-size: 0.85rem;
+  margin: 0;
 }
 
 .site-footer {
@@ -244,7 +522,7 @@ nav {
   align-items: center;
   padding: 2rem 0;
   border-top: 1px solid var(--border);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--muted);
