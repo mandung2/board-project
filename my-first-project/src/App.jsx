@@ -34,7 +34,13 @@ function withNumberFont(text) {
 
 function loadAuth() {
   try {
-    return JSON.parse(localStorage.getItem(AUTH_KEY))
+    const fromLocal = JSON.parse(localStorage.getItem(AUTH_KEY))
+    if (fromLocal) return fromLocal
+  } catch {
+    // ignore
+  }
+  try {
+    return JSON.parse(sessionStorage.getItem(AUTH_KEY))
   } catch {
     return null
   }
@@ -72,6 +78,7 @@ function App() {
   const [auth, setAuth] = useState(loadAuth)
   const [authMode, setAuthMode] = useState('login')
   const [authForm, setAuthForm] = useState({ id: '', password: '', nickname: '' })
+  const [rememberMe, setRememberMe] = useState(true)
   const [authError, setAuthError] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
 
@@ -173,7 +180,11 @@ function App() {
         return
       }
       const newAuth = { id: data.user.id, nickname: data.user.nickname, token: data.token }
-      localStorage.setItem(AUTH_KEY, JSON.stringify(newAuth))
+      if (rememberMe) {
+        localStorage.setItem(AUTH_KEY, JSON.stringify(newAuth))
+      } else {
+        sessionStorage.setItem(AUTH_KEY, JSON.stringify(newAuth))
+      }
       setAuth(newAuth)
       setAuthForm({ id: '', password: '', nickname: '' })
     } finally {
@@ -183,6 +194,7 @@ function App() {
 
   function logout() {
     localStorage.removeItem(AUTH_KEY)
+    sessionStorage.removeItem(AUTH_KEY)
     setAuth(null)
     setTodos([])
   }
@@ -358,6 +370,14 @@ function App() {
                   onChange={(e) => setAuthForm((f) => ({ ...f, nickname: e.target.value }))}
                 />
               )}
+              <label className="auth-remember">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
+                자동 로그인
+              </label>
               {authError && <p className="auth-error">{authError}</p>}
               <button type="submit" disabled={authLoading}>
                 {authMode === 'login' ? '로그인' : '회원가입'}
